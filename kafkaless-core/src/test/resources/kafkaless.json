@@ -1,0 +1,5 @@
+{"pipes": [{"tenant": "jsonTenant", "pipes": [
+  {"pipeId" : "myPipe",
+    "pipe": {"from": "from", "function": "functionFromJson", "to": "to"}
+  }
+]}]}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.kafkaless</groupId>
+        <artifactId>kafkaless-bom</artifactId>
+        <version>0.0-SNAPSHOT</version>
+        <relativePath>../bom</relativePath>
+    </parent>
+    <artifactId>kafkaless-management-app</artifactId>
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <mainClass>org.kafkaless.management.app.KafkalessManagementApp</mainClass>
+        <image.target>management</image.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.kafkaless</groupId>
+            <artifactId>kafkaless-core</artifactId>
+            <version>0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
