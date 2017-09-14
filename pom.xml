@@ -46,7 +46,7 @@
 
     <modules>
         <module>bom</module>
-        <module>kafkaless-core</module>
+        <module>core</module>
         <module>management-app</module>
     </modules>
 
