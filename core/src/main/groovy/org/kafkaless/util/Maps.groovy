@@ -1,5 +1,5 @@
 /**
- * Licensed to the KPipes under one or more
+ * Licensed to the Kafkaless under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The licenses this file to You under the Apache License, Version 2.0
@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kpipes.binding.util
+package org.kafkaless.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.commons.lang3.Validate

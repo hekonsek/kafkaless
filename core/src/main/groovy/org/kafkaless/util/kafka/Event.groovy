@@ -1,6 +1,6 @@
 package org.kafkaless.util.kafka
 
-import static kpipes.binding.util.Maps.convert
+import static org.kafkaless.util.Maps.convert
 
 interface Event {
 

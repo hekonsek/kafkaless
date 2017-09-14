@@ -30,7 +30,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool
 import static org.kafkaless.util.kafka.Topics.Listed.topics
 import static org.kafkaless.util.Json.fromJson
 import static org.kafkaless.util.Json.jsonString
-import static kpipes.binding.util.Maps.convert
+import static org.kafkaless.util.Maps.convert
 import static kpipes.binding.util.Reflections.isContainer
 import static kpipes.binding.util.Reflections.isJavaLibraryType
 import static org.kafkaless.util.Uuids.uuid

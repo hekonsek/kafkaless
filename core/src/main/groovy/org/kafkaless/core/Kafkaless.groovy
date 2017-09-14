@@ -1,6 +1,6 @@
 package org.kafkaless.core
 
-import kpipes.binding.util.Maps
+import org.kafkaless.util.Maps
 import org.apache.commons.io.IOUtils
 import org.kafkaless.core.api.EventCallback
 import org.kafkaless.core.api.EventContext
