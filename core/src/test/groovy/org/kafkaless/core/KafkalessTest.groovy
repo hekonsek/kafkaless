@@ -102,7 +102,7 @@ class KafkalessTest {
 
         // Then
         await().untilAsserted {
-            assertThat(management.countEvents(tenant, 'to')).isGreaterThan(1L)
+            assertThat(management.countEvents(tenant, 'to')).isGreaterThan(0L)
         }
     }
 
