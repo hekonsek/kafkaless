@@ -16,30 +16,38 @@
  */
 package org.kafkaless.core.api
 
-class EventContext {
+import org.apache.commons.lang3.Validate
+
+class Event {
 
     private final String key
 
-    private final Map<String, Object> event
-
     private final Map<String, Object> metadata
 
-    EventContext(String key, Map<String, Object> event, Map<String, Object> metadata) {
+    private final Optional<Map<String, Object>> payload
+
+    Event(String key, Map<String, Object> metadata, Optional<Map<String, Object>> payload) {
+        validateConstructor(key, metadata)
         this.key = key
-        this.event = event
         this.metadata = metadata
+        this.payload = payload
+    }
+
+    private validateConstructor(String key, Map<String, Object> metadata) {
+        Validate.isTrue(!key.empty, 'Key can be null, but cannot be empty string.')
+        Validate.notNull(metadata, 'Metadata can be empty, but cannot be null.')
     }
 
     String key() {
         key
     }
 
-    Map<String, Object> event() {
-        event
-    }
-
     Map<String, Object> metadata() {
         metadata
+    }
+
+    Optional<Map<String, Object>> payload() {
+        payload
     }
 
 }

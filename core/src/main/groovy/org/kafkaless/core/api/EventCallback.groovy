@@ -18,6 +18,6 @@ package org.kafkaless.core.api
 
 interface EventCallback {
 
-    EventContext onEvent(EventContext eventContext)
+    Event onEvent(Event event)
 
 }

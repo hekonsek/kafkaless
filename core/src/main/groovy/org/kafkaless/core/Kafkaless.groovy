@@ -3,7 +3,7 @@ package org.kafkaless.core
 import org.kafkaless.util.Maps
 import org.apache.commons.io.IOUtils
 import org.kafkaless.core.api.EventCallback
-import org.kafkaless.core.api.EventContext
+import org.kafkaless.core.api.Event
 import org.kafkaless.core.api.KafkalessOperations
 import org.kafkaless.util.kafka.ConsumerConfig
 import org.kafkaless.util.kafka.KafkaTemplate
@@ -70,13 +70,13 @@ class Kafkaless implements KafkalessOperations {
             def event = fromJson(it.value(), Map)
             def metadata = event.metadata as Map
             def payload = event.payload as Map
-            def result = eventCallback.onEvent(new EventContext(it.key(), payload, metadata))
+            def result = eventCallback.onEvent(new Event(it.key(), metadata, Optional.of(payload)))
             def effectiveTo = to
             def clientId = metadata.clientId as String
             if(clientId != null) {
                 effectiveTo = "responses.${clientId}"
             }
-            kafkaTemplate.sendEvent("${tenant}.${effectiveTo}", it.key(), Optional.of(mapEvent([metadata: result.metadata(), payload: result.event()])))
+            kafkaTemplate.sendEvent("${tenant}.${effectiveTo}", it.key(), Optional.of(mapEvent([metadata: result.metadata(), payload: result.payload().orElse(null)])))
         }
     }
 

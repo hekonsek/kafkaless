@@ -2,7 +2,7 @@ package kpipes.binding
 
 import org.kafkaless.core.Pipe
 import org.kafkaless.core.api.EventCallback
-import org.kafkaless.core.api.EventContext
+import org.kafkaless.core.api.Event
 import org.kafkaless.util.kafka.BrokerAdmin
 import org.kafkaless.util.kafka.ConsumerConfig
 import org.kafkaless.util.kafka.RecordCallback
@@ -202,7 +202,7 @@ class KafkaBinding {
         Validate.notBlank(clientId, "Request's client ID cannot be blank.")
         Validate.notBlank(service, 'Request service cannot be blank.')
         Validate.notBlank(operation, 'Request operation cannot be blank.')
-        Validate.notNull(event, "Request event can't be null.")
+        Validate.notNull(event, "Request payload can't be null.")
 
         def topic = "service.request.${service}.${operation}"
         def serializedEvent = new Bytes(jsonString([metadata: [tenant: tenant, user: user, clientId: clientId], event: event]).bytes)
@@ -234,26 +234,6 @@ class KafkaBinding {
         def serializedEvent = new Bytes(jsonString([error: response]).bytes)
         brokerAdmin.ensureTopicExists(topic)
         producer.send(new ProducerRecord(topic, requestId, serializedEvent)).get()
-    }
-
-    void registerServiceOperation(String service, String operation, EventCallback eventCallback) {
-        subscribeForRequestEvents(uuid(), service, operation) {
-            def requestEvent = fromJson(it.value(), Map)
-            def clientId = requestEvent.metadata.clientId as String
-            def eventContext = new EventContext(it.key(), requestEvent.event as Map, requestEvent.metadata as Map)
-            try {
-                def result = eventCallback.onEvent(eventContext)
-                if(result == null) {
-                    result = 'OK'
-                } else if(result instanceof Optional) {
-                    result = result.orElse(null)
-                }
-                sendResponseEvent(clientId, it.key(), result)
-            } catch (Exception e) {
-                LOG.debug('Error while processing request event:', e)
-                sendErrorResponseEvent(clientId, it.key(), e.message)
-            }
-        }
     }
 
     def <T> T executeOperation(String tenant, String user, String service, String operation, Map<String, Object> event, Class<T> responseType) {
@@ -313,57 +293,6 @@ class KafkaBinding {
             } else {
                 stopConsumer(it.key())
             }
-        }
-    }
-
-    void registerFunction(String selector, EventCallback eventCallback) {
-        registerFunction(selector, false, eventCallback)
-    }
-
-    // Functions
-
-    void startFunctionPipe(String pipeId, Pipe pipe, boolean hasManualOutput, EventCallback eventCallback) {
-        def tenant = pipe.tenant
-        def fromNamespace = pipe.fromNamespace
-        def from = pipe.from
-        def toNamespace = pipe.toNamespace
-        def to = pipe.to
-
-        ConsumerConfig config
-        if(fromNamespace == '_user') {
-            config = new ConsumerConfig(new Topics.Regex(/data\.${tenant}\.(?!_).+?\.${from}/))
-            config.metadataMaxAgeMs(5000)
-        } else {
-            config = new ConsumerConfig(topics("data.${tenant}.${fromNamespace}.${from}"))
-        }
-        subscribe(config.groupdId(pipeId).errorTopic("error.${pipeId}")) {
-            def event = fromJson(it.value(), Map)
-            def metadata = [tenant: tenant, fromNamespace: fromNamespace, from: from, toNamespace: toNamespace, to: to, configuration: pipe.configuration]
-            def result = eventCallback.onEvent(new EventContext(it.key(), new LinkedHashMap<String, Object>(event), metadata))
-
-            if(hasManualOutput) {
-                return
-            }
-
-            Map<String, Object> processedEvent
-            def enhance = pipe.configuration.enhance as Boolean
-            if(enhance == null || enhance) {
-                def results = event.enhanced as Map
-                if(results == null) {
-                    results = [:]
-                    event.enhanced = results
-                }
-                results["${pipe.function}-${pipeId}"] = result
-                processedEvent = event
-            } else {
-                def isNonMapContainer = isContainer(result.getClass()) && !(result instanceof Map)
-                if(isJavaLibraryType(result.getClass()) || isNonMapContainer) {
-                    processedEvent = [event: result]
-                } else {
-                    processedEvent = convert(result)
-                }
-            }
-            sendEvent(tenant, null, toNamespace, to, it.key(), processedEvent)
         }
     }
 

@@ -28,9 +28,9 @@ class KafkaEventTemplateTest {
 //
 //    def key = uuid()
 //
-//    def event = [foo: uuid()]
+//    def payload = [foo: uuid()]
 //
-//    def eventBytes = jsonBytes(event)
+//    def eventBytes = jsonBytes(payload)
 //
 //    @Test
 //    void shouldValidateNullTopic() {
@@ -53,8 +53,8 @@ class KafkaEventTemplateTest {
 //
 //        binding.subscribe(new ConsumerConfig(topics(topic))) {
 //            // Then
-//            def event = fromJson(it.value())
-//            assertThat(event).isEqualTo(this.event)
+//            def payload = fromJson(it.value())
+//            assertThat(payload).isEqualTo(this.payload)
 //            async.complete()
 //        }
 //    }
@@ -81,7 +81,7 @@ class KafkaEventTemplateTest {
 //            assertThat(events).hasSize(1)
 //            assertThat(events.first().key()).isEqualTo(key)
 //            def event = fromJson(events.first().value())
-//            assertThat(event).isEqualTo(event)
+//            assertThat(payload).isEqualTo(payload)
 //        }
 //    }
 

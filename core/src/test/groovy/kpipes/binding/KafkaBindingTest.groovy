@@ -104,7 +104,7 @@ class KafkaBindingTest {
 //        }
 //
 //        // When
-//        def response = binding.executeOperation(tenant, user, 'service', 'operation', event, String)
+//        def response = binding.executeOperation(tenant, user, 'service', 'operation', payload, String)
 //
 //        // Then
 //        assertThat(response).isEqualTo(this.response)
@@ -127,7 +127,7 @@ class KafkaBindingTest {
 //        }
 //
 //        // When
-//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, event)
+//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, payload)
 //    }
 //
 //    @Test
@@ -146,7 +146,7 @@ class KafkaBindingTest {
 //        }
 //
 //        // When
-//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, event)
+//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, payload)
 //    }
 //
 //    @Test
@@ -165,7 +165,7 @@ class KafkaBindingTest {
 //        }
 //
 //        // When
-//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, event)
+//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, payload)
 //    }
 //
 //    @Test
@@ -185,7 +185,7 @@ class KafkaBindingTest {
 //        }
 //
 //        // When
-//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', 'errorOperation', event)
+//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', 'errorOperation', payload)
 //    }
 //
 //    @Test
@@ -202,7 +202,7 @@ class KafkaBindingTest {
 //        Thread.sleep(1000)
 //
 //        // When
-//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, event)
+//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, payload)
 //    }
 //
 //    // Pipes tests
@@ -244,7 +244,7 @@ class KafkaBindingTest {
 //        def async = context.async()
 //
 //        binding.functionHandler('myfunction2') {
-//            it.event()
+//            it.payload()
 //        }
 //        binding.addPipe(uuid(), new Pipe(tenant: tenant, fromNamespace: namespace, from: 'from', function: 'myfunction2', toNamespace: namespace, to: 'to'))
 //
@@ -264,7 +264,7 @@ class KafkaBindingTest {
 //        binding.addPipe(pipeId, pipe)
 //
 //        // When
-//        binding.sendEvent(tenant, user, fromNamespace, from, key, event)
+//        binding.sendEvent(tenant, user, fromNamespace, from, key, payload)
 //
 //        // Then
 //        assertThat(binding.countDataEvents(tenant, null, namespace, to)).isEqualTo(0L)
@@ -275,7 +275,7 @@ class KafkaBindingTest {
 //        def async = context.async()
 //
 //        binding.functionHandler(function) {
-//            it.event()
+//            it.payload()
 //        }
 //        binding.addPipe(pipeId, new Pipe(tenant: tenant, fromNamespace: user, from: 'from', function: function, toNamespace: namespace, to: 'to'))
 //
@@ -290,7 +290,7 @@ class KafkaBindingTest {
 //        def async = context.async()
 //
 //        binding.functionHandler(function) {
-//            it.event()
+//            it.payload()
 //        }
 //        binding.addPipe(pipeId, new Pipe(tenant: tenant, fromNamespace: '_user', from: 'from', function: function, toNamespace: namespace, to: 'to'))
 //
@@ -305,7 +305,7 @@ class KafkaBindingTest {
 //        def async = context.async()
 //
 //        binding.functionHandler(function) {
-//            it.event()
+//            it.payload()
 //        }
 //        binding.addPipe(pipeId, new Pipe(tenant: tenant, fromNamespace: '_user', from: 'from', function: function, toNamespace: toNamespace, to: to))
 //
@@ -358,10 +358,10 @@ class KafkaBindingTest {
 //        def pipe = new Pipe(tenant: tenant, fromNamespace: namespace, from: 'from', function: 'myfunction', toNamespace: namespace, to: 'to')
 //
 //        binding.functionHandler(pipeId, pipe, false) {
-//            it.event()
+//            it.payload()
 //        }
 //
-//        binding.sendEvent(tenant, user, namespace, 'from', key, event)
+//        binding.sendEvent(tenant, user, namespace, 'from', key, payload)
 //
 //        binding.subscribe(new ConsumerConfig(topics("data.${tenant}.${namespace}.to"))) {
 //            def result = fromJson(it.value()).enhanced["myfunction-${pipeId}"] as Map
@@ -377,10 +377,10 @@ class KafkaBindingTest {
 //        def pipe = new Pipe(tenant: tenant, fromNamespace: namespace, from: 'from', function: 'myfunction', toNamespace: namespace, to: 'to', configuration: [enhance: false])
 //
 //        binding.functionHandler(pipeId, pipe, false) {
-//            it.event()
+//            it.payload()
 //        }
 //
-//        binding.sendEvent(tenant, user, namespace, 'from', key, event)
+//        binding.sendEvent(tenant, user, namespace, 'from', key, payload)
 //
 //        binding.subscribe(new ConsumerConfig(topics("data.${tenant}.${namespace}.to"))) {
 //            def result = fromJson(it.value()) as Map
