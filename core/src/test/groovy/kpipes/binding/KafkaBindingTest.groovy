@@ -30,8 +30,6 @@ class KafkaBindingTest {
     
     // Fixtures
 
-    def binding = new KafkaBindingBuilder().build()
-
     def tenant = uuid()
 
     def user = uuid()
@@ -92,42 +90,6 @@ class KafkaBindingTest {
 //            assertThat(tail).hasSize(2)
 //            async.complete()
 //        }
-//    }
-//
-//    // Service operations events tests
-//
-//    @Test
-//    void shouldRegisterServiceOperation() {
-//        // Given
-//        binding.registerServiceOperation('service', 'operation') {
-//            response
-//        }
-//
-//        // When
-//        def response = binding.executeOperation(tenant, user, 'service', 'operation', payload, String)
-//
-//        // Then
-//        assertThat(response).isEqualTo(this.response)
-//    }
-//
-//    @Test
-//    void voidOperationShouldReturnOkResponse(TestContext context) {
-//        // Given
-//        def async = context.async()
-//        binding.registerServiceOperation('service', operation) {
-//            def date = new Date()
-//            date.setTime(1000)
-//        }
-//
-//        binding.subscribeForResponseEvents(uuid(), clientId) {
-//            // Then
-//            def response = fromJson(it.value())
-//            assertThat(response.response).isEqualTo('OK')
-//            async.complete()
-//        }
-//
-//        // When
-//        binding.sendRequestEvent(tenant, user, clientId, requestId, 'service', operation, payload)
 //    }
 //
 //    @Test

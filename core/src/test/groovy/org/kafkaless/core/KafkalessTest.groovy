@@ -18,7 +18,6 @@ package org.kafkaless.core
 
 import org.junit.Test
 import org.kafkaless.endpoint.management.ManagementService
-import org.kafkaless.util.kafka.KafkaTemplate
 
 import static org.assertj.core.api.Assertions.assertThat
 import static org.awaitility.Awaitility.await
@@ -29,11 +28,11 @@ class KafkalessTest {
 
     // Kafkaless fixtures
 
-    def template = new KafkaTemplate('localhost', 9092, 'localhost', 2181)
-
     def tenant = uuid()
 
-    def kafkaless = new Kafkaless(template, tenant)
+    def kafkaless = new KafkalessBuilder("--TENANT=${tenant}").build()
+
+    def template = kafkaless.@kafkaTemplate
 
     // Management service fixtures
 
