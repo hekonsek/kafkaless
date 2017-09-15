@@ -20,4 +20,6 @@ interface KafkalessOperations {
 
     void functionHandler(String functionName, EventCallback eventCallback)
 
+    Map<String, Object> invoke(String function, Map<String, Object> metadata, Map<String, Object> payload)
+
 }

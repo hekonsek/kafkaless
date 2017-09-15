@@ -17,6 +17,7 @@
 package org.kafkaless.core
 
 import org.junit.Test
+import org.kafkaless.core.api.Event
 import org.kafkaless.endpoint.management.ManagementService
 
 import static org.assertj.core.api.Assertions.assertThat
@@ -134,6 +135,25 @@ class KafkalessTest {
 
         // Then
         assertThat(response.payload as Map).containsEntry('order', 'lastOne')
+    }
+
+    @Test
+    void shouldInvokeFunctionFromFunction() {
+        // Given
+        kafkaless.functionHandler(functionName) {
+            def inv = kafkaless.invoke('helloFunction', it.metadata(), it.payload().get())
+            new Event(it.key(), inv.metadata as Map, Optional.of(inv.payload as Map))
+        }
+        kafkaless.functionHandler('helloFunction') {
+            it.payload().get().hello = 'world'
+            it
+        }
+
+        // When
+        def response = management.invoke(tenant, functionName, event)
+
+        // Then
+        assertThat(response.payload.hello).isEqualTo('world')
     }
 
 }

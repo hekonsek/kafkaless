@@ -155,12 +155,10 @@ class KafkaTemplate {
             consumer.subscribe(topics.regex(), new ConsumerRebalanceListener() {
                 @Override
                 void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-//                    LOG.debug('Revoked partitions: {}', partitions)
                 }
 
                 @Override
                 void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-//                    LOG.debug('Assigned partitions: {}', partitions)
                 }
             })
         } else {

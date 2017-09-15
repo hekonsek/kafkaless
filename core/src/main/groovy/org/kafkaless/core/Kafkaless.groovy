@@ -7,6 +7,7 @@ import org.kafkaless.core.api.Event
 import org.kafkaless.core.api.KafkalessOperations
 import org.kafkaless.util.kafka.ConsumerConfig
 import org.kafkaless.util.kafka.KafkaTemplate
+import org.kafkaless.util.kafka.RequestReplyTemplate
 
 import static com.google.common.base.Charsets.UTF_8
 import static org.kafkaless.util.Json.fromJson
@@ -19,9 +20,12 @@ class Kafkaless implements KafkalessOperations {
 
     private final String tenant
 
+    private final RequestReplyTemplate requestReplyTemplate
+
     Kafkaless(KafkaTemplate kafkaTemplate, String tenant) {
         this.kafkaTemplate = kafkaTemplate
         this.tenant = tenant
+        this.requestReplyTemplate = new RequestReplyTemplate(kafkaTemplate, tenant)
 
         loadJsonDefinitions()
     }
@@ -72,12 +76,16 @@ class Kafkaless implements KafkalessOperations {
             def payload = event.payload as Map
             def result = eventCallback.onEvent(new Event(it.key(), metadata, Optional.of(payload)))
             def effectiveTo = to
-            def clientId = metadata.clientId as String
+            def clientId = result.metadata().clientId
             if(clientId != null) {
                 effectiveTo = "responses.${clientId}"
             }
             kafkaTemplate.sendEvent("${tenant}.${effectiveTo}", it.key(), Optional.of(mapEvent([metadata: result.metadata(), payload: result.payload().orElse(null)])))
         }
+    }
+
+    Map<String, Object> invoke(String function, Map<String, Object> metadata, Map<String, Object> payload) {
+        requestReplyTemplate.invoke(function, metadata, payload)
     }
 
 }
