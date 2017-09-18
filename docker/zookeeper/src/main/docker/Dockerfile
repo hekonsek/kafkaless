@@ -8,4 +8,4 @@ VOLUME ["/tmp/zookeeper"]
 
 EXPOSE 2181
 
-ENTRYPOINT ["/kafka_2.12-0.11.0.0/bin/zookeeper-server-start.sh", "/kafka_2.12-0.11.0.0/config/zookeeper.properties"]
+ENTRYPOINT ["/kafka_2.12-0.11.0.1/bin/zookeeper-server-start.sh", "/kafka_2.12-0.11.0.1/config/zookeeper.properties"]
