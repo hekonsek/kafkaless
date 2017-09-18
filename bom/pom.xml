@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.kafkaless</groupId>
         <artifactId>kafkaless</artifactId>
-        <version>0.0</version>
+        <version>0.1-SNAPSHOT</version>
     </parent>
     <artifactId>kafkaless-bom</artifactId>
     <name>${project.artifactId}</name>
