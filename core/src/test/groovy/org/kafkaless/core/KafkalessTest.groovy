@@ -18,6 +18,7 @@ package org.kafkaless.core
 
 import org.junit.Test
 import org.kafkaless.core.api.Event
+import org.kafkaless.core.api.KafkalessBuilder
 import org.kafkaless.endpoint.management.ManagementService
 
 import static org.assertj.core.api.Assertions.assertThat

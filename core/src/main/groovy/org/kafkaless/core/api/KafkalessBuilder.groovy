@@ -14,9 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kafkaless.core
+package org.kafkaless.core.api
 
 import kpipes.binding.util.Config
+import org.kafkaless.core.Kafkaless
 import org.kafkaless.util.kafka.KafkaTemplate
 
 class KafkalessBuilder {
@@ -27,7 +28,7 @@ class KafkalessBuilder {
         this.config = new Config(args)
     }
 
-    Kafkaless build() {
+    KafkalessOperations build() {
         def kafkaHost = config.serviceHost('KAFKA')
         def kafkaPort = config.servicePort('KAFKA', 9092)
         def zooKeeperHost = config.serviceHost('ZOOKEEPER')
