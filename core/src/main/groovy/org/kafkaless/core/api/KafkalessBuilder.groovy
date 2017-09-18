@@ -16,7 +16,7 @@
  */
 package org.kafkaless.core.api
 
-import kpipes.binding.util.Config
+import org.kafkaless.util.Config
 import org.kafkaless.core.Kafkaless
 import org.kafkaless.util.kafka.KafkaTemplate
 

@@ -16,7 +16,7 @@
  */
 package kpipes.binding.util.docker
 
-import kpipes.binding.util.Config
+import org.kafkaless.util.Config
 import kpipes.binding.util.process.DefaultProcessManager
 import kpipes.binding.util.process.SudoResolver
 import org.assertj.core.api.Assertions

@@ -1,6 +1,6 @@
 package kpipes.binding.util.process
 
-import kpipes.binding.util.Config
+import org.kafkaless.util.Config
 import org.assertj.core.api.Assertions
 import org.junit.Test
 

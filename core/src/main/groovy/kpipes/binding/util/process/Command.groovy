@@ -17,7 +17,7 @@
 package kpipes.binding.util.process
 
 import groovy.transform.ToString
-import kpipes.binding.util.Config
+import org.kafkaless.util.Config
 
 @ToString(includeNames = true, includeFields = true)
 class Command {

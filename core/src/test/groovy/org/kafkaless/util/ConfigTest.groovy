@@ -1,10 +1,15 @@
-package kpipes.binding.util
+package org.kafkaless.util
 
 import org.junit.Test
 
 import static org.assertj.core.api.Assertions.assertThat
 
 class ConfigTest {
+
+    @Test(expected = NoSuchElementException)
+    void shouldThrowExceptionOnMissingProperty() {
+        new Config().configuration().getString('noSuchProperty')
+    }
 
     @Test
     void shouldReadOptionUsingCommonsConfig() {
