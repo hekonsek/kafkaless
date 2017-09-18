@@ -12,7 +12,7 @@
 
     <groupId>org.kafkaless</groupId>
     <artifactId>kafkaless</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
 
@@ -316,7 +316,7 @@
         <connection>scm:git:git@github.com:kafkaless/kafkaless.git</connection>
         <developerConnection>scm:git:git@github.com:kafkaless/kafkaless.git</developerConnection>
         <url>git@github.com:kafkaless/kafkaless.git</url>
-        <tag>HEAD</tag>
+        <tag>kafkaless-0.1</tag>
     </scm>
 
     <distributionManagement>
