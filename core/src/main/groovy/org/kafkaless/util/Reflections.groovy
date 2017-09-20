@@ -1,5 +1,5 @@
 /**
- * Licensed to the KPipes under one or more
+ * Licensed to the Kafkaless under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The licenses this file to You under the Apache License, Version 2.0
@@ -14,11 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kpipes.binding.util
+package org.kafkaless.util
 
-class Reflections {
+import groovy.transform.CompileStatic
 
-    private static final wrapperClasses = [:]
+@CompileStatic
+final class Reflections {
+
+    private static final Map<Object, Class<?>> wrapperClasses = [:]
     static {
         wrapperClasses[int.class] = Integer.class
         wrapperClasses[long.class] = Long.class
@@ -29,7 +32,7 @@ class Reflections {
         wrapperClasses[double.class] = Double.class
     }
 
-    private static final wrappersOf = [:]
+    private static final Map<Object, Class<?>> wrappersOf = [:]
     static {
         wrappersOf[Integer.class] = int.class
         wrappersOf[Long.class] = long.class
@@ -38,6 +41,9 @@ class Reflections {
         wrappersOf[Character.class] = char.class
         wrappersOf[Float.class] = float.class
         wrappersOf[Double.class] = double.class
+    }
+
+    private Reflections() {
     }
 
     static boolean wrappableAwareInstanceOf(Class<?> type, Class<?> instanceOf) {
@@ -65,7 +71,7 @@ class Reflections {
     }
 
     static boolean isPojo(Class<?> type) {
-        type != Object.class && !isJavaLibraryType(type) && !isContainer(type)
+        type != Object && !isJavaLibraryType(type) && !isContainer(type)
     }
 
 }

@@ -1,12 +1,9 @@
 package kpipes.binding
 
 import org.kafkaless.core.Pipe
-import org.kafkaless.core.api.EventCallback
-import org.kafkaless.core.api.Event
 import org.kafkaless.util.kafka.BrokerAdmin
 import org.kafkaless.util.kafka.ConsumerConfig
 import org.kafkaless.util.kafka.RecordCallback
-import org.kafkaless.util.kafka.Topics
 import kpipes.binding.view.KeyValueMaterializedView
 import org.apache.commons.lang3.Validate
 import org.apache.kafka.clients.consumer.KafkaConsumer
@@ -30,9 +27,6 @@ import static java.util.concurrent.Executors.newCachedThreadPool
 import static org.kafkaless.util.kafka.Topics.Listed.topics
 import static org.kafkaless.util.Json.fromJson
 import static org.kafkaless.util.Json.jsonString
-import static org.kafkaless.util.Maps.convert
-import static kpipes.binding.util.Reflections.isContainer
-import static kpipes.binding.util.Reflections.isJavaLibraryType
 import static org.kafkaless.util.Uuids.uuid
 import static org.awaitility.Awaitility.await
 import static org.slf4j.LoggerFactory.getLogger
