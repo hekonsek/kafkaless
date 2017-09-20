@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.kafkaless</groupId>
         <artifactId>kafkaless</artifactId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.4</version>
     </parent>
     <artifactId>kafkaless-bom</artifactId>
     <name>${project.artifactId}</name>
@@ -31,7 +31,7 @@
         <jackson.version>2.9.1</jackson.version>
         <junit.version>4.12</junit.version>
         <kafka.version>0.11.0.1</kafka.version>
-        <kafkaless.version>0.4-SNAPSHOT</kafkaless.version>
+        <kafkaless.version>0.4</kafkaless.version>
         <logback.version>1.2.2</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
         <undertow.version>1.4.20.Final</undertow.version>
