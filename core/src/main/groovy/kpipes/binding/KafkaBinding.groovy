@@ -76,83 +76,6 @@ class KafkaBinding {
 //        template = new KafkaEventTemplate(kafkaHost, kafkaPort, zooKeeperHost, zooKeeperPort)
     }
 
-    // Generic operations
-//
-////    void subscribe(ConsumerConfig consumerConfig, RecordCallback recordCallback) {
-//        def topics = consumerConfig.topics()
-////        if (topics instanceof Topics.Listed) {
-//            brokerAdmin.ensureTopicExists(topics.topics() as Set)
-//        }
-//
-//        def consumerProperties = new HashMap<>(consumerConfig.consumerProperties())
-//        consumerProperties['bootstrap.servers'] = "${kafkaHost}:${kafkaPort}" as String
-//        consumerProperties['key.deserializer'] = StringDeserializer.name
-//        consumerProperties['value.deserializer'] = BytesDeserializer.name
-//
-//        def consumer = new KafkaConsumer<String, Bytes>(consumerProperties)
-//        if (topics instanceof Topics.Listed) {
-//            consumer.subscribe(topics.topics())
-//        } else if (topics instanceof Topics.Regex) {
-//            consumer.subscribe(topics.regex(), new ConsumerRebalanceListener() {
-//                @Override
-//                void onPartitionsRevoked(Collection<TopicPartition> partitions) {
-//                    LOG.debug('Revoked partitions: {}', partitions)
-//                }
-//
-//                @Override
-//                void onPartitionsAssigned(Collection<TopicPartition> partitions) {
-//                    LOG.debug('Assigned partitions: {}', partitions)
-//                }
-//            })
-//        } else {
-//            throw new IllegalArgumentException("Unknown topics specification type: ${topics.class}")
-//        }
-//
-//        def taskId = consumerConfig.taskId()
-//        stopRequests.put(taskId, new AtomicBoolean(false))
-//        executor.submit {
-//            while (!stopRequests[taskId].get()) {
-//                try {
-//                    def events = consumer.poll(5000)
-//                    def iterator = events.iterator()
-//                    while (iterator.hasNext()) {
-//                        def record = iterator.next()
-//                        try {
-//                            recordCallback.onRecord(record)
-//                        } catch (Exception e) {
-//                            def eventBytes = (record.value() as Bytes).get()
-//
-//                            def errorWriter = new ByteArrayOutputStream(5 * 1024)
-//                            def errorPrinter = errorWriter.newPrintWriter()
-//                            def message = e.message != null ? e.message : ''
-//                            errorPrinter.println(message.bytes)
-//                            e.printStackTrace(errorPrinter)
-//                            errorPrinter.close()
-//                            errorWriter.close()
-//
-//                            def errorMessage = "${message}:\n${new String(errorWriter.toByteArray())}\n${new String(eventBytes)}"
-//                            def errorTopic = consumerConfig.errorTopic() != null ? consumerConfig.errorTopic() : "error.${record.topic()}"
-//                            brokerAdmin.ensureTopicExists(errorTopic)
-//
-//                            producer.send(new ProducerRecord(errorTopic, record.key(), new Bytes(errorMessage.bytes)))
-//                        }
-//                        consumer.commitSync()
-//                    }
-//                    Thread.sleep(100)
-//                } catch (WakeupException e) {
-//                    stopRequests[taskId].set(true)
-//                    consumer.close()
-//                }
-//            }
-//        }
-//    }
-
-    void stopConsumer(String taskId) {
-        if (stopRequests.containsKey(taskId)) {
-            stopRequests[taskId].set(true)
-        }
-    }
-
     // Data events
 
     void deleteDataEvent(String tenant, String user, String namespace, String streamName, String key) {
@@ -283,17 +206,5 @@ class KafkaBinding {
         pipesView.list('admin', 'admin')
     }
 
-    void registerFunction(String selector, boolean hasManualOutput, EventCallback eventCallback) {
-        subscribe(new ConsumerConfig(topics('pipe'))) {
-            if(it.value() != null) {
-                def pipe = fromJson(it.value(), Pipe)
-                if (pipe.function == selector) {
-                    startFunctionPipe(it.key(), pipe, hasManualOutput, eventCallback)
-                }
-            } else {
-                stopConsumer(it.key())
-            }
-        }
-    }
 
 }
