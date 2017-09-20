@@ -15,11 +15,11 @@ import static org.kafkaless.util.Json.jsonString
 import static org.kafkaless.util.Uuids.uuid
 
 @RunWith(VertxUnitRunner)
-class ManagementRestEndpointTest {
+class RestManagementEndpointTest {
 
     static def template = new KafkaTemplate('localhost', 9092, 'localhost', 2181)
 
-    static def managementEndpoint = new ManagementRestEndpoint(new ManagementService(template))
+    static def managementEndpoint = new RestManagementEndpoint(new ManagementService(template))
 
     static {
         managementEndpoint.start()

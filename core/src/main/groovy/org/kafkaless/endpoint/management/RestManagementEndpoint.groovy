@@ -11,11 +11,11 @@ import static org.kafkaless.util.Json.fromJson
 import static org.kafkaless.util.Json.jsonString
 import static org.kafkaless.util.kafka.Event.MapEvent.mapEvent
 
-class ManagementRestEndpoint {
+class RestManagementEndpoint {
 
     private final ManagementService managementService
 
-    ManagementRestEndpoint(ManagementService managementService) {
+    RestManagementEndpoint(ManagementService managementService) {
         this.managementService = managementService
     }
 
