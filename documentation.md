@@ -16,7 +16,7 @@ Kafkaless architecture consists of the following elements:
 
 ### Functions
 
-Function is a small application connected to Kafka cluster. Function consumes events from certain topic, processes that event and sends 
+Function is a small application connected to Kafka cluster. Function consumes event from certain topic, processes that event and sends 
 processed event to the another topic. 
 
 You can implement function using any programming language you want, but the easiest approach is to
