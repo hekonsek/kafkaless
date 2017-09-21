@@ -31,13 +31,18 @@ final class DockerizedKafka {
     }
 
     static ensureKafkaIsRunning() {
-        def docker = new CommandLineDocker(new DefaultProcessManager(new SudoResolver(new Config())))
-        def kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-core').orElse('0.4')
-        println "Kafkaless version " + kafkalessVersion
-        docker.startService(new ContainerBuilder("kafkaless/zookeeper:${kafkalessVersion}").name(uuid()).net('host').build())
-        docker.startService(new ContainerBuilder("kafkaless/kafka:${kafkalessVersion}").name(uuid()).net('host').build())
-        Thread.sleep(5000)
-        println "AFTER SLEEP"
+        try {
+            def docker = new CommandLineDocker(new DefaultProcessManager(new SudoResolver(new Config())))
+            def kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-core').orElse('0.4')
+            println "Kafkaless version " + kafkalessVersion
+            docker.startService(new ContainerBuilder("kafkaless/zookeeper:${kafkalessVersion}").name(uuid()).net('host').build())
+            docker.startService(new ContainerBuilder("kafkaless/kafka:${kafkalessVersion}").name(uuid()).net('host').build())
+            Thread.sleep(5000)
+            println "AFTER SLEEP"
+        } catch (Throwable e) {
+            e.printStackTrace()
+            throw e
+        }
     }
 
 }
