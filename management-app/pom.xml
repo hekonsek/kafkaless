@@ -13,7 +13,7 @@
     <parent>
         <groupId>org.kafkaless</groupId>
         <artifactId>kafkaless-bom</artifactId>
-        <version>0.5-SNAPSHOT</version>
+        <version>0.5</version>
         <relativePath>../bom</relativePath>
     </parent>
     <artifactId>kafkaless-management-app</artifactId>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>org.kafkaless</groupId>
             <artifactId>kafkaless-core</artifactId>
-            <version>0.5-SNAPSHOT</version>
+            <version>0.5</version>
         </dependency>
     </dependencies>
 
