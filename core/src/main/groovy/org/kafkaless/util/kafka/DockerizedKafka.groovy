@@ -32,7 +32,9 @@ final class DockerizedKafka {
 
     static ensureKafkaIsRunning() {
         def docker = new CommandLineDocker(new DefaultProcessManager(new SudoResolver(new Config())))
-        def kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-core')
+        def kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-core').orElseThrow {
+            new IllegalStateException('Cannot read Kafkaless version from Maven metadata.')
+        }
         docker.startService(new ContainerBuilder("kafkaless/zookeeper:${kafkalessVersion}").name(uuid()).net('host').build())
         docker.startService(new ContainerBuilder("kafkaless/kafka:${kafkalessVersion}").name(uuid()).net('host').build())
         Thread.sleep(5000)
