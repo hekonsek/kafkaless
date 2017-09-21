@@ -51,13 +51,13 @@ class Kafkaless implements KafkalessOperations {
 
         kafkaTemplate.subscribe(new ConsumerConfig(topics("${tenant}.functions"))) { pipeRecord ->
             if(pipeRecord.value() != null) {
-                if(kafkaTemplate.isTaskStarted(pipeRecord.key())) {
-                    kafkaTemplate.stopConsumer(pipeRecord.key())
-                }
-
                 def pipe = fromJson(pipeRecord.value(), Pipe)
                 if (pipe.function == functionName) {
                     (1..pipe.concurrencyLevel).each {
+                        if(kafkaTemplate.isTaskStarted("${pipeRecord.key()}_${it}")) {
+                            kafkaTemplate.stopConsumer("${pipeRecord.key()}_${it}")
+                        }
+
                         startFunctionConsumer(tenant, pipeRecord.key(),  it, pipe, eventCallback)
                     }
                 }
