@@ -20,21 +20,22 @@ import kpipes.binding.util.docker.CommandLineDocker
 import kpipes.binding.util.docker.ContainerBuilder
 import kpipes.binding.util.process.DefaultProcessManager
 import kpipes.binding.util.process.SudoResolver
-import org.kafkaless.util.Config
 
 import static org.kafkaless.util.Mavens.artifactVersionFromDependenciesProperties
 import static org.kafkaless.util.Uuids.uuid
 
 final class DockerizedKafka {
 
+    static docker = new CommandLineDocker(new DefaultProcessManager(new SudoResolver()))
+
+    static kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-core').orElseThrow {
+        new IllegalStateException('Cannot read Kafkaless version from Maven metadata.')
+    }
+
     private DockerizedKafka() {
     }
 
     static ensureKafkaIsRunning() {
-        def docker = new CommandLineDocker(new DefaultProcessManager(new SudoResolver(new Config())))
-        def kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-core').orElseThrow {
-            new IllegalStateException('Cannot read Kafkaless version from Maven metadata.')
-        }
         docker.startService(new ContainerBuilder("kafkaless/zookeeper:${kafkalessVersion}").name(uuid()).net('host').build())
         docker.startService(new ContainerBuilder("kafkaless/kafka:${kafkalessVersion}").name(uuid()).net('host').build())
         Thread.sleep(5000)
