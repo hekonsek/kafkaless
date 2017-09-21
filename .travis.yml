@@ -6,6 +6,3 @@ jdk:
 sudo: required
 services:
   - docker
-
-env:
-- SUDO_PASSWORD=""

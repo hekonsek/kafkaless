@@ -73,7 +73,7 @@ class Command {
         if(sudoPassword != null) {
             return sudoPassword
         }
-        new Config().configuration().getString('SUDO_PASSWORD')
+        new Config().configuration().getString('SUDO_PASSWORD', null)
     }
 
 }
