@@ -80,6 +80,7 @@ class ManagementService {
         def requestId = uuid()
         (event.metadata as Map).clientId = clientId
         Optional<Event> requestEvent = Optional.of(mapEvent(event)) as Optional<Event>
+        template.brokerAdmin().ensureTopicExists("${tenant}.${function}.requests")
         saveEvent(tenant, "${function}.requests" as String, requestId, requestEvent)
         await().atMost(30, SECONDS).until({
             responses.getIfPresent(requestId) != null

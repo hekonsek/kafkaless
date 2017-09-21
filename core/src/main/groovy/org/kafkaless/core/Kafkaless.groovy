@@ -49,6 +49,7 @@ class Kafkaless implements KafkalessOperations {
 
     void functionHandler(String functionName, EventCallback eventCallback) {
         def pipesTopic = pipesTopic(tenant)
+        kafkaTemplate.brokerAdmin().ensureTopicExists(pipesTopic)
         def requestReplyPipe = new Pipe(from: "${functionName}.requests", function: functionName)
         kafkaTemplate.sendEvent(pipesTopic, "${functionName}-requests", Optional.of(mapEvent(Maps.convert(requestReplyPipe))))
 

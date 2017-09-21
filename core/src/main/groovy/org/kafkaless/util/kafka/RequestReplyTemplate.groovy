@@ -58,6 +58,7 @@ class RequestReplyTemplate {
         def requestId = uuid()
         def oldClientId = metadata.clientId
         metadata.clientId = clientId
+        template.brokerAdmin().ensureTopicExists("${tenant}.${function}.requests")
         template.sendEvent("${tenant}.${function}.requests", requestId, Optional.of(mapEvent([metadata: metadata, payload: payload])))
         await().until({
             responses.getIfPresent(requestId) != null
