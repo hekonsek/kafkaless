@@ -49,28 +49,34 @@ class Kafkaless implements KafkalessOperations {
         def requestReplyPipe = new Pipe(from: "${functionName}.requests", function: functionName)
         kafkaTemplate.sendEvent("${tenant}.functions", "${functionName}-requests", Optional.of(mapEvent(Maps.convert(requestReplyPipe))))
 
-        kafkaTemplate.subscribe(new ConsumerConfig(topics("${tenant}.functions"))) {
-            if(it.value() != null) {
-                if(kafkaTemplate.isTaskStarted(it.key())) {
-                    kafkaTemplate.stopConsumer(it.key())
+        kafkaTemplate.subscribe(new ConsumerConfig(topics("${tenant}.functions"))) { pipeRecord ->
+            if(pipeRecord.value() != null) {
+                if(kafkaTemplate.isTaskStarted(pipeRecord.key())) {
+                    kafkaTemplate.stopConsumer(pipeRecord.key())
                 }
 
-                def pipe = fromJson(it.value(), Pipe)
+                def pipe = fromJson(pipeRecord.value(), Pipe)
                 if (pipe.function == functionName) {
-                    startFunctionHandler(tenant, it.key(), pipe, eventCallback)
+                    (1..pipe.concurrencyLevel).each {
+                        startFunctionConsumer(tenant, pipeRecord.key(),  it, pipe, eventCallback)
+                    }
                 }
             } else {
-                kafkaTemplate.stopConsumer(it.key())
+                kafkaTemplate.listTasks().each {
+                    if(it.startsWith("${pipeRecord.key()}_")) {
+                        kafkaTemplate.stopConsumer(it)
+                    }
+                }
             }
         }
     }
 
-    void startFunctionHandler(String tenant, String pipeId, Pipe pipe, EventCallback eventCallback) {
+    private void startFunctionConsumer(String tenant, String pipeId, int instanceNumber, Pipe pipe, EventCallback eventCallback) {
         def from = pipe.from
         def to = pipe.to
 
         ConsumerConfig config = new ConsumerConfig(topics("${tenant}.${from}"))
-        kafkaTemplate.subscribe(config.groupdId(pipeId).errorTopic("${tenant}.${pipeId}.error")) {
+        kafkaTemplate.subscribe(config.groupdId(pipeId).taskId("${pipeId}_${instanceNumber}").errorTopic("${tenant}.${pipeId}.error")) {
             def event = fromJson(it.value(), Map)
             def metadata = event.metadata as Map
             def payload = event.payload as Map

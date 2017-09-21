@@ -8,6 +8,8 @@ class Pipe {
 
     String to
 
+    int concurrencyLevel = 10
+
     Map<String, Object> configuration = [:]
 
 }

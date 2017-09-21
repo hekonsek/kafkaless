@@ -20,8 +20,12 @@ import org.junit.Test
 import org.kafkaless.core.api.Event
 import org.kafkaless.core.api.KafkalessBuilder
 import org.kafkaless.endpoint.management.ManagementService
-import org.kafkaless.util.kafka.DockerizedKafka
 
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
+
+import static java.lang.Math.abs
+import static java.lang.System.currentTimeMillis
 import static org.assertj.core.api.Assertions.assertThat
 import static org.awaitility.Awaitility.await
 import static org.kafkaless.util.Uuids.uuid
@@ -128,6 +132,37 @@ class KafkalessTest {
 
         // Then
         assertThat(response).isNotEmpty()
+    }
+
+    @Test
+    void shouldInvokeFunctionConcurrently() {
+        // Given
+        def executor = Executors.newCachedThreadPool()
+        List<Long> executions = []
+
+        kafkaless.functionHandler(functionName) {
+            executions << currentTimeMillis()
+            it
+        }
+
+        // When
+        def first = executor.submit(new Callable() {
+            @Override
+            Object call() throws Exception {
+                management.invoke(tenant, functionName, event)
+            }
+        })
+        def second = executor.submit(new Callable() {
+            @Override
+            Object call() throws Exception {
+                management.invoke(tenant, functionName, event)
+            }
+        })
+        first.get()
+        second.get()
+
+        // Then
+        assertThat(abs(executions[0] - executions[1])).isLessThan(1000L)
     }
 
     @Test

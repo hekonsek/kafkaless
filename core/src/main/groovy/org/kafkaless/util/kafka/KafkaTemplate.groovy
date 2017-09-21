@@ -229,6 +229,10 @@ class KafkaTemplate {
         }
     }
 
+    List<String> listTasks() {
+        stopRequests.keySet().toList()
+    }
+
     // Accessors
 
     BrokerAdmin brokerAdmin() {
