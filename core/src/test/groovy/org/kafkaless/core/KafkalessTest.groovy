@@ -20,13 +20,21 @@ import org.junit.Test
 import org.kafkaless.core.api.Event
 import org.kafkaless.core.api.KafkalessBuilder
 import org.kafkaless.endpoint.management.ManagementService
+import org.kafkaless.util.kafka.DockerizedKafka
 
 import static org.assertj.core.api.Assertions.assertThat
 import static org.awaitility.Awaitility.await
 import static org.kafkaless.util.Uuids.uuid
+import static org.kafkaless.util.kafka.DockerizedKafka.ensureKafkaIsRunning
 import static org.kafkaless.util.kafka.Event.MapEvent.mapEvent
 
 class KafkalessTest {
+
+    // Kafka broker fixtures
+
+    static {
+        ensureKafkaIsRunning()
+    }
 
     // Kafkaless fixtures
 

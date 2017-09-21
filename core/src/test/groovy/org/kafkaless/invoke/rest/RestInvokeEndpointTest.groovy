@@ -13,17 +13,23 @@ import static org.assertj.core.api.Assertions.assertThat
 import static org.kafkaless.util.Json.fromJson
 import static org.kafkaless.util.Json.jsonString
 import static org.kafkaless.util.Uuids.uuid
+import static org.kafkaless.util.kafka.DockerizedKafka.ensureKafkaIsRunning
 
 @RunWith(VertxUnitRunner)
 class RestInvokeEndpointTest {
 
+    // Kafka broker fixtures
+
     static def tenant = uuid()
 
-    static def template = new KafkaTemplate('localhost', 9092, 'localhost', 2181)
+    static KafkaTemplate template
 
-    static def endpoint = new RestInvokeEndpoint(new ManagementService(template), new MockAuthentication(tenant))
+    static RestInvokeEndpoint endpoint
 
     static {
+        ensureKafkaIsRunning()
+        template = new KafkaTemplate('localhost', 9092, 'localhost', 2181)
+        endpoint = new RestInvokeEndpoint(new ManagementService(template), new MockAuthentication(tenant))
         endpoint.start()
     }
 

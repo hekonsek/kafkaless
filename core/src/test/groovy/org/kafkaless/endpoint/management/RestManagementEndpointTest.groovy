@@ -6,6 +6,8 @@ import org.apache.commons.io.IOUtils
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.kafkaless.core.Kafkaless
+import org.kafkaless.invoke.rest.MockAuthentication
+import org.kafkaless.invoke.rest.RestInvokeEndpoint
 import org.kafkaless.util.kafka.KafkaTemplate
 
 import static io.vertx.core.Vertx.vertx
@@ -13,15 +15,21 @@ import static org.assertj.core.api.Assertions.assertThat
 import static org.kafkaless.util.Json.fromJson
 import static org.kafkaless.util.Json.jsonString
 import static org.kafkaless.util.Uuids.uuid
+import static org.kafkaless.util.kafka.DockerizedKafka.ensureKafkaIsRunning
 
 @RunWith(VertxUnitRunner)
 class RestManagementEndpointTest {
 
-    static def template = new KafkaTemplate('localhost', 9092, 'localhost', 2181)
+    // Kafka broker fixtures
 
-    static def managementEndpoint = new RestManagementEndpoint(new ManagementService(template))
+    static KafkaTemplate template
+
+    static RestManagementEndpoint managementEndpoint
 
     static {
+        ensureKafkaIsRunning()
+        template = new KafkaTemplate('localhost', 9092, 'localhost', 2181)
+        managementEndpoint = new RestManagementEndpoint(new ManagementService(template))
         managementEndpoint.start()
     }
 
