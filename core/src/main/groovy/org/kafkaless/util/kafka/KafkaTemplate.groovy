@@ -66,7 +66,7 @@ class KafkaTemplate {
         producerConfig['value.serializer'] = BytesSerializer.name
         producer = new KafkaProducer(producerConfig)
 
-        brokerAdmin = new BrokerAdmin(zooKeeperHost, zooKeeperPort, 25)
+        brokerAdmin = new BrokerAdmin(zooKeeperHost, zooKeeperPort, 30)
     }
 
     void sendEvent(String topic, String key, Optional<Event> event) {

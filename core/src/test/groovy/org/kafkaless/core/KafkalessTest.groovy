@@ -28,6 +28,7 @@ import static java.lang.Math.abs
 import static java.lang.System.currentTimeMillis
 import static org.assertj.core.api.Assertions.assertThat
 import static org.awaitility.Awaitility.await
+import static org.kafkaless.core.Kafkaless.PIPES_TOPIC
 import static org.kafkaless.util.Uuids.uuid
 import static org.kafkaless.util.kafka.DockerizedKafka.ensureKafkaIsRunning
 import static org.kafkaless.util.kafka.Event.MapEvent.mapEvent
@@ -71,7 +72,7 @@ class KafkalessTest {
     @Test
     void shouldExecuteFunction() {
         // Given
-        management.saveEvent(tenant, 'functions', pipeId, Optional.of(mapEvent(pipe)))
+        management.saveEvent(tenant, PIPES_TOPIC, pipeId, Optional.of(mapEvent(pipe)))
         kafkaless.functionHandler(functionName) {
             it
         }
@@ -88,7 +89,7 @@ class KafkalessTest {
     @Test
     void shouldRedirectEventToErrorQueue() {
         // Given
-        management.saveEvent(tenant, 'functions', pipeId, Optional.of(mapEvent(pipe)))
+        management.saveEvent(tenant, PIPES_TOPIC, pipeId, Optional.of(mapEvent(pipe)))
         kafkaless.functionHandler(functionName) {
             throw new RuntimeException()
         }

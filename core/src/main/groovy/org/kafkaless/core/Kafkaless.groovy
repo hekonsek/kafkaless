@@ -16,6 +16,8 @@ import static org.kafkaless.util.kafka.Topics.Listed.topics
 
 class Kafkaless implements KafkalessOperations {
 
+    private static final PIPES_TOPIC = 'pipes'
+
     private final KafkaTemplate kafkaTemplate
 
     private final String tenant
@@ -40,16 +42,17 @@ class Kafkaless implements KafkalessOperations {
             def tenant = it.tenant as String
             def pipes = (List<Map<String, Object>>) it.pipes
             pipes.each {
-                kafkaTemplate.sendEvent("${tenant}.functions", it.pipeId as String, Optional.of(mapEvent(it.pipe as Map)))
+                kafkaTemplate.sendEvent(pipesTopic(tenant), it.pipeId as String, Optional.of(mapEvent(it.pipe as Map)))
             }
         }
     }
 
     void functionHandler(String functionName, EventCallback eventCallback) {
+        def pipesTopic = pipesTopic(tenant)
         def requestReplyPipe = new Pipe(from: "${functionName}.requests", function: functionName)
-        kafkaTemplate.sendEvent("${tenant}.functions", "${functionName}-requests", Optional.of(mapEvent(Maps.convert(requestReplyPipe))))
+        kafkaTemplate.sendEvent(pipesTopic, "${functionName}-requests", Optional.of(mapEvent(Maps.convert(requestReplyPipe))))
 
-        kafkaTemplate.subscribe(new ConsumerConfig(topics("${tenant}.functions"))) { pipeRecord ->
+        kafkaTemplate.subscribe(new ConsumerConfig(topics(pipesTopic))) { pipeRecord ->
             if(pipeRecord.value() != null) {
                 def pipe = fromJson(pipeRecord.value(), Pipe)
                 if (pipe.function == functionName) {
@@ -92,6 +95,12 @@ class Kafkaless implements KafkalessOperations {
 
     Map<String, Object> invoke(String function, Map<String, Object> metadata, Map<String, Object> payload) {
         requestReplyTemplate.invoke(function, metadata, payload)
+    }
+
+    // Helpers
+
+    private String pipesTopic(String tenant) {
+        "${tenant}.${PIPES_TOPIC}"
     }
 
 }
