@@ -1,6 +1,7 @@
 # Kafkaless - functions over Kafka data streams
 
 [![Version](https://img.shields.io/badge/kafkaless-0.4-blue.svg)](https://github.com/kafkaless/kafkaless/releases)
+[![Build](https://api.travis-ci.org/kafkaless/kafkaless.svg)](https://travis-ci.org/kafkaless/kafkaless/)
 
 Kafkaless brings serverless function processing model to Apache Kafka data streams.
 
