@@ -1,4 +1,4 @@
-package kpipes.binding.util.process;
+package org.kafkaless.util.process;
 
 class ProcessExecutionException extends RuntimeException {
 

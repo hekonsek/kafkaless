@@ -1,4 +1,4 @@
-package kpipes.binding.util.process
+package org.kafkaless.util.process
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

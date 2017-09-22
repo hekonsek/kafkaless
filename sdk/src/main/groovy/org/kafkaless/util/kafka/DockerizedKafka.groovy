@@ -18,8 +18,8 @@ package org.kafkaless.util.kafka
 
 import kpipes.binding.util.docker.CommandLineDocker
 import kpipes.binding.util.docker.ContainerBuilder
-import kpipes.binding.util.process.DefaultProcessManager
-import kpipes.binding.util.process.SudoResolver
+import org.kafkaless.util.process.DefaultProcessManager
+import org.kafkaless.util.process.SudoResolver
 
 import static org.kafkaless.util.Mavens.artifactVersionFromDependenciesProperties
 import static org.kafkaless.util.Uuids.uuid

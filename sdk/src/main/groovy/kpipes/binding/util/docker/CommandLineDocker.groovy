@@ -1,8 +1,8 @@
 package kpipes.binding.util.docker
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import kpipes.binding.util.process.Command
-import kpipes.binding.util.process.ProcessManager
+import org.kafkaless.util.process.Command
+import org.kafkaless.util.process.ProcessManager
 import org.apache.commons.lang3.Validate
 import org.slf4j.LoggerFactory
 

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package kpipes.binding.util.process
+package org.kafkaless.util.process
 
 import org.kafkaless.util.Config
 
