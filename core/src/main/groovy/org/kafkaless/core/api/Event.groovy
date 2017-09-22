@@ -16,6 +16,8 @@
  */
 package org.kafkaless.core.api
 
+import com.google.common.base.MoreObjects
+import groovy.transform.ToString
 import org.apache.commons.lang3.Validate
 
 class Event {
@@ -48,6 +50,15 @@ class Event {
 
     Optional<Map<String, Object>> payload() {
         payload
+    }
+
+    @Override
+    String toString() {
+        return MoreObjects.toStringHelper(this).
+                add("key", key).
+                add("metadata", metadata).
+                add("payload", payload.orElse([:])).
+                toString()
     }
 
 }

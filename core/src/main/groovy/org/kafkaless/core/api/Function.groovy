@@ -16,7 +16,7 @@
  */
 package org.kafkaless.core.api
 
-interface EventCallback {
+interface Function {
 
     Event onEvent(Event event)
 

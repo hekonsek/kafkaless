@@ -2,7 +2,7 @@ package org.kafkaless.core
 
 import org.kafkaless.util.Maps
 import org.apache.commons.io.IOUtils
-import org.kafkaless.core.api.EventCallback
+import org.kafkaless.core.api.Function
 import org.kafkaless.core.api.Event
 import org.kafkaless.core.api.KafkalessOperations
 import org.kafkaless.util.kafka.ConsumerConfig
@@ -47,7 +47,7 @@ class Kafkaless implements KafkalessOperations {
         }
     }
 
-    void functionHandler(String functionName, EventCallback eventCallback) {
+    void functionHandler(String functionName, Function eventCallback) {
         def pipesTopic = pipesTopic(tenant)
         kafkaTemplate.brokerAdmin().ensureTopicExists(pipesTopic)
         def requestReplyPipe = new Pipe(from: "${functionName}.requests", function: functionName)
@@ -75,7 +75,7 @@ class Kafkaless implements KafkalessOperations {
         }
     }
 
-    private void startFunctionConsumer(String tenant, String pipeId, int instanceNumber, Pipe pipe, EventCallback eventCallback) {
+    private void startFunctionConsumer(String tenant, String pipeId, int instanceNumber, Pipe pipe, Function eventCallback) {
         def from = pipe.from
         def to = pipe.to
 

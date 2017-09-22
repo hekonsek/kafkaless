@@ -14,12 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kafkaless.core.api
+package org.kafkaless.org.kafkaless.sdk.api
 
-interface KafkalessOperations {
+import org.junit.Test
+import org.kafkaless.core.api.Event
 
-    void functionHandler(String functionName, Function eventCallback)
+import static java.util.Optional.empty
+import static org.assertj.core.api.Assertions.assertThat
 
-    Map<String, Object> invoke(String function, Map<String, Object> metadata, Map<String, Object> payload)
+class EventTest {
+
+    @Test
+    void shouldPrintEmptyPayload() {
+        def toString = new Event('key', [:], empty()).toString()
+        assertThat(toString).contains('payload={}')
+    }
 
 }
