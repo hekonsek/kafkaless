@@ -42,7 +42,7 @@
             <!-- Internal dependencies -->
             <dependency>
                 <groupId>org.kafkaless</groupId>
-                <artifactId>kafkaless-core</artifactId>
+                <artifactId>kafkaless-sdk</artifactId>
                 <version>${kafkaless.version}</version>
             </dependency>
 

@@ -27,8 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>org.kafkaless</groupId>
-            <artifactId>kafkaless-core</artifactId>
-            <version>0.6-SNAPSHOT</version>
+            <artifactId>kafkaless-sdk</artifactId>
         </dependency>
     </dependencies>
 
