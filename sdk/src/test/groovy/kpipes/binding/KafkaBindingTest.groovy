@@ -19,7 +19,7 @@ package kpipes.binding
 import io.vertx.ext.unit.junit.VertxUnitRunner
 import org.junit.Ignore
 import org.junit.runner.RunWith
-import org.kafkaless.sdk.Pipe
+import org.kafkaless.sdk.impl.Pipe
 
 import static org.kafkaless.util.Json.jsonBytes
 import static org.kafkaless.util.Uuids.uuid

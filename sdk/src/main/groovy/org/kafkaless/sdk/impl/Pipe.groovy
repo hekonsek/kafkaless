@@ -1,4 +1,4 @@
-package org.kafkaless.sdk
+package org.kafkaless.sdk.impl
 
 class Pipe {
 

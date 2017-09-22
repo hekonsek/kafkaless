@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kafkaless.sdk.api
+package org.kafkaless.sdk
 
 import com.google.common.base.MoreObjects
 import org.apache.commons.lang3.Validate

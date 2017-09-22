@@ -4,7 +4,7 @@ import io.vertx.ext.unit.TestContext
 import io.vertx.ext.unit.junit.VertxUnitRunner
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.kafkaless.sdk.Kafkaless
+import org.kafkaless.sdk.impl.DefaultKafkaless
 import org.kafkaless.endpoint.management.ManagementService
 import org.kafkaless.util.kafka.KafkaTemplate
 
@@ -43,7 +43,7 @@ class RestInvokeEndpointTest {
     void shouldInvokeFunction(TestContext context) {
         def async = context.async()
 
-        new Kafkaless(template, tenant).functionHandler(functionName) {
+        new DefaultKafkaless(template, tenant).functionHandler(functionName) {
             it
         }
         Thread.sleep(5000)

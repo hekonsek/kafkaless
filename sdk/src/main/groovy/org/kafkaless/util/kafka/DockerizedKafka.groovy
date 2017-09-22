@@ -29,7 +29,7 @@ final class DockerizedKafka {
     static docker = new CommandLineDocker(new DefaultProcessManager(new SudoResolver()))
 
     static kafkalessVersion = artifactVersionFromDependenciesProperties('org.kafkaless', 'kafkaless-sdk').orElseThrow {
-        new IllegalStateException('Cannot read Kafkaless version from Maven metadata.')
+        new IllegalStateException('Cannot read DefaultKafkaless version from Maven metadata.')
     }
 
     private DockerizedKafka() {

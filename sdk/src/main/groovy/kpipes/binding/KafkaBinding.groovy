@@ -1,6 +1,6 @@
 package kpipes.binding
 
-import org.kafkaless.sdk.Pipe
+import org.kafkaless.sdk.impl.Pipe
 import org.kafkaless.util.kafka.BrokerAdmin
 import org.kafkaless.util.kafka.ConsumerConfig
 import org.kafkaless.util.kafka.RecordCallback

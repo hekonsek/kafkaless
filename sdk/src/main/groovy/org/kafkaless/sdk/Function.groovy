@@ -14,12 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kafkaless.sdk.api
+package org.kafkaless.sdk
 
-interface KafkalessOperations {
+interface Function {
 
-    void functionHandler(String functionName, Function eventCallback)
-
-    Map<String, Object> invoke(String function, Map<String, Object> metadata, Map<String, Object> payload)
+    Event onEvent(Event event)
 
 }

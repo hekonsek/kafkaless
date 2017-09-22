@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kafkaless.org.kafkaless.sdk
+package org.kafkaless.org.kafkaless.sdk.impl
 
 import org.junit.Test
-import org.kafkaless.sdk.Kafkaless
-import org.kafkaless.sdk.Pipe
-import org.kafkaless.sdk.api.Event
-import org.kafkaless.sdk.api.KafkalessBuilder
+import org.kafkaless.sdk.impl.DefaultKafkaless
+import org.kafkaless.sdk.impl.Pipe
+import org.kafkaless.sdk.Event
+import org.kafkaless.sdk.KafkalessBuilder
 import org.kafkaless.endpoint.management.ManagementService
 
 import java.util.concurrent.Callable
@@ -30,12 +30,12 @@ import static java.lang.Math.abs
 import static java.lang.System.currentTimeMillis
 import static org.assertj.core.api.Assertions.assertThat
 import static org.awaitility.Awaitility.await
-import static org.kafkaless.sdk.Kafkaless.PIPES_TOPIC
+import static DefaultKafkaless.PIPES_TOPIC
 import static org.kafkaless.util.Uuids.uuid
 import static org.kafkaless.util.kafka.DockerizedKafka.ensureKafkaIsRunning
 import static org.kafkaless.util.kafka.Event.MapEvent.mapEvent
 
-class KafkalessTest {
+class DefaultKafkalessTest {
 
     // Kafka broker fixtures
 
@@ -43,7 +43,7 @@ class KafkalessTest {
         ensureKafkaIsRunning()
     }
 
-    // Kafkaless fixtures
+    // DefaultKafkaless fixtures
 
     def tenant = uuid()
 
@@ -109,7 +109,7 @@ class KafkalessTest {
     void shouldLoadFunctionFromJson() {
         // Given
         def tenant = 'jsonTenant'
-        def kafkaless = new Kafkaless(template, tenant)
+        def kafkaless = new DefaultKafkaless(template, tenant)
         kafkaless.functionHandler('functionFromJson') {
             it
         }
