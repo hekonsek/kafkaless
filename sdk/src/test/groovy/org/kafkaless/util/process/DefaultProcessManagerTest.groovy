@@ -83,7 +83,7 @@ class DefaultProcessManagerTest {
     @Test
     void shouldChangeWorkingDirectory() {
         // Given
-        def tempFile = createTempFile('KPipes', 'test')
+        def tempFile = createTempFile('kafkaless', 'test')
         def command = new CommandBuilder('ls').workingDirectory(tempFile.parentFile).build()
 
         // When
